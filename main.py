@@ -36,13 +36,13 @@ def root():
         # Show last product added
         cur.execute('SELECT productId, name, price, description, image, stock FROM products ORDER BY productId DESC LIMIT 1 ')
         # Show all items
-        #cur.execute('SELECT productId, name, price, description, image, stock FROM products LIMIT 1')
+        cur.execute('SELECT productId, name, price, description, image, stock FROM products LIMIT 1')
         item_data = cur.fetchall()
         # Show an error instead of the categories
         category_data = [(-1,"Error")]
         # Show all categories
-        #cur.execute('SELECT categoryId, name FROM categories')
-        #category_data = cur.fetchall()
+        cur.execute('SELECT categoryId, name FROM categories')
+        category_data = cur.fetchall()
     item_data = parse(item_data)
     return render_template('home.html', itemData=item_data, loggedIn=logged_in, firstName=first_name, noOfItems=no_of_items, categoryData=category_data)
 
@@ -77,7 +77,7 @@ def addItem():
                 conn.commit()
                 msg="Added successfully"
             except:
-                msg="Error occured"
+                msg="Error occurred"
                 conn.rollback()
         conn.close()
         print(msg)
@@ -169,17 +169,17 @@ def update_profile():
                     msg = "Saved Successfully"
                 except:
                     con.rollback()
-                    msg = "Error occured"
+                    msg = "Error occurred"
         con.close()
         return redirect(url_for('edit_profile'))
 
 @app.route("/loginForm")
 def login_form():
     # Uncomment to enable logging in and registration
-    #if 'email' in session:
+    if 'email' in session:
         return redirect(url_for('root'))
-    #else:
-    #    return render_template('login.html', error='')
+    else:
+        return render_template('login.html', error='')
 
 @app.route("/login", methods = ['POST', 'GET'])
 def login():
@@ -222,7 +222,7 @@ def add_to_cart():
                 msg = "Added successfully"
             except:
                 conn.rollback()
-                msg = "Error occured"
+                msg = "Error occurred"
         conn.close()
         return redirect(url_for('root'))
 
@@ -330,7 +330,7 @@ def register():
                 msg = "Registered Successfully"
             except:
                 con.rollback()
-                msg = "Error occured"
+                msg = "Error occurred"
         con.close()
         return render_template("login.html", error=msg)
 
